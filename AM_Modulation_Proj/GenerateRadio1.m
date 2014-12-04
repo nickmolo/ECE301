@@ -1,3 +1,4 @@
+% Written by Nick Molo and Damian Parton
 %% Generating constants
 
 duration = 8;

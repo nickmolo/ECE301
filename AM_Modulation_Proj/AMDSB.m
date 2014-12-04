@@ -1,5 +1,5 @@
 function [ y ] =AMDSB(ch)
-
+% Written by Nick Molo and Damian Parton
 % ch: is an input deciding which signal you would like to tune into.
 % ch = 1, 2, 3 for AM-DSB
 

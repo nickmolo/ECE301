@@ -1,5 +1,5 @@
 function [y] = AMSSB_mod()
-
+% Written by Nick Molo and Damian Parton
 % Givens
 duration = 8;
 f_sample = 44100;
