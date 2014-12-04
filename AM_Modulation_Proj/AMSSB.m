@@ -68,6 +68,7 @@ out_right = conj(out_left);
 out_final = 4 *(out_right + out_left);
 
 % Save the final demodulated output
+%soundsc(out_final* attenuation, f_sample);
 wavwrite(out_final * attenuation,f_sample,'output.wav');
 
 end

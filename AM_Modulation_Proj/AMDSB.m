@@ -1,5 +1,5 @@
 function [ y ] =AMDSB(ch)
-% Written by Nick Molo and Damian Parton
+%% Written by Nick Molo and Damian Parton
 % ch: is an input deciding which signal you would like to tune into.
 % ch = 1, 2, 3 for AM-DSB
 
@@ -14,7 +14,8 @@ radio1=radio1';
 
 %% Low Pass filter creation
 Wc =1000/pi;
-h = 2*Wc*sinc(2* Wc * t);
+%h = 2*Wc*sinc(2* Wc * t);
+h = sin(2*pi*500*t)./(pi*t);
 
 %% Frequencies decided upon
 fc1 = 900*pi;

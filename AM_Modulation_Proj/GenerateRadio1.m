@@ -19,12 +19,15 @@ x3=x3';
 Wc =1000/pi;
 
 %% Low Pass filter creation
-h = 2*Wc*sinc(2* Wc * t);
+%h = 2*Wc*sinc(2* Wc * t);
+h = sin(2*pi*500*t)./(pi*t);
 
 %% Passing signal through low pass filter
 x1_lpf = ece301conv(x1, h);
 x2_lpf = ece301conv(x2, h);
 x3_lpf = ece301conv(x3, h);
+
+soundsc(x1_lpf, f_sample);
 
 %% Picking Filter Frequencies 
 
