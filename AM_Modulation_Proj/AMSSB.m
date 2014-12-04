@@ -1,4 +1,5 @@
 function [y] = AMSSB(ch)
+% Written by Nick Molo and Damian Parton
 % ch = 1, 2, 3, 4, 5, 6
 % ch is the channel you want to tune in to
 
