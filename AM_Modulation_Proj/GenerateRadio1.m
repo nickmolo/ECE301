@@ -27,7 +27,7 @@ x1_lpf = ece301conv(x1, h);
 x2_lpf = ece301conv(x2, h);
 x3_lpf = ece301conv(x3, h);
 
-soundsc(x1_lpf, f_sample);
+%soundsc(x1_lpf, f_sample);
 
 %% Picking Filter Frequencies 
 
