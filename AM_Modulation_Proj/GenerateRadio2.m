@@ -40,9 +40,8 @@ x5_lpf = ece301conv(x5, h);
 x6_lpf = ece301conv(x6, h);
 
 
-%% Construct AM DSB signals
+%% Chosen carrier frequencies
 
-% Chosen carrier frequencies
 fc1 = 2*pi*1000;
 fc2 = 2*pi*2100;
 fc3 = 2*pi*3200;
@@ -76,10 +75,9 @@ z4 = ece301conv(y4, x4_ssb_lpf);
 z5 = ece301conv(y5, x5_ssb_lpf); 
 z6 = ece301conv(y6, x6_ssb_lpf); 
 
-% adding signals together
-total = z1 +z2 +z3 +z4 + z5 + z6;
-%% Demodulation
+%% Generating Radio 2
 
+total = z1 +z2 +z3 +z4 + z5 + z6;
 audiowrite('radio2.wav', total, f_sample );
 
 % 
