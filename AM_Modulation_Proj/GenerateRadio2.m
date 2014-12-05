@@ -5,7 +5,8 @@
 duration = 8;
 f_sample = 44100;
 t = (((0-4)*f_sample+0.5):((duration-4)*f_sample-0.5))/f_sample;
-f = f_sample * (-9999:10000)/100000;
+f = f_sample * (1:20000)/100000;
+f2 = f_sample * (-9999:10000)/100000;
 
 %% Load the samples
 [x1, ~]=audioread('x1.wav');
@@ -26,85 +27,149 @@ x5=x5';
 [x6, ~]=audioread('x6.wav');
 x6=x6';
 
-% MODULATION
-% Wm = 142;
-% w_a = 2 * Wm; % Want 0-1khz
-% w_b = 2.25 * w_a; % Want 1.25-2.25kHz
-% w_c = 3.5 * w_a; % Want 2.5-3.5kHz
-% w_d = 4.75 * w_a; % Want 3.75-4.75kHz
-% w_e = 6 * w_a; % Want 5-6kHz
-% w_f = 7.25 * w_a; % Want 6.25-7.25kHz
-
-% Initial LP filter
-% h_lpf = 2*Wm*sinc(2*Wm*t) .* cos(3000*pi*t);
+%% Initinal low pass filter
 
 W=1000/pi;
-h = 2*W*sinc(2 * W * t);
+h = 2 * W * sinc(2 * W * t);
 
-% Putting signals through low pass filter
+%% Putting signals through low pass filter
 
 x1_lpf = ece301conv(x1, h);
+x2_lpf = ece301conv(x2, h);
+x3_lpf = ece301conv(x3, h);
+x4_lpf = ece301conv(x4, h);
+x5_lpf = ece301conv(x5, h);
+x6_lpf = ece301conv(x6, h);
 
-% modulating signals
-fc1 = 2000*pi;
+
+%% Construct AM DSB signals
+
+% Chosen carrier frequencies
+fc1 = 320*pi;
+fc2 = 1000*pi;
+fc3 = 1700*pi;
+fc4 = 2400*pi;
+fc5 = 3100*pi;
+fc6 = 3850*pi;
+
+% Modulating filtered signal over carrier frequency
 y1 = x1_lpf .* cos(fc1* t);
+y2 = x2_lpf .* cos(fc2* t);
+y3 = x3_lpf .* cos(fc3* t);
+y4 = x4_lpf .* cos(fc4* t);
+y5 = x5_lpf .* cos(fc5* t);
+y6 = x6_lpf .* cos(fc6* t);
 
-%y1 = x1_lpf;
-subplot(2,1,1);
- y1fft = abs(fft(y1));
- y1fft = y1fft(1:20000);
- plot(f, y1fft);
+%% Single Side band lpf filter
 
-% Single Side band lpf filter
-W1 = fc1*2*4;
+% Removing lower side frequencies 
+W1 = fc1/pi;
+W2 = fc2/pi;
+W3 = fc3/pi;
+W4 = fc4/pi;
+W5 = fc5/pi;
+W6 = fc6/pi;
 
-ssb_lpf = 2 * W1 * sinc(2 * W1 * t);
 
-z1 = ece301conv(y1, ssb_lpf); 
-subplot(2,1,2);
- y1fft = abs(fft(z1));
- y1fft = y1fft(1:20000);
- plot(f, y1fft);
-% 
-% 
-% % SSB LP filters
-% h_lpf_x1 = 2*w_a*sinc(w_a*t) .* cos(w_a*pi*t);
-% h_lpf_x2 = 2*w_a*sinc(w_b*t) .* cos(w_b*pi*t);
-% h_lpf_x3 = 2*w_a*sinc(w_c*t) .* cos(w_c*pi*t);
-% h_lpf_x4 = 2*w_a*sinc(w_d*t) .* cos(w_d*pi*t);
-% h_lpf_x5 = 2*w_a*sinc(w_e*t) .* cos(w_e*pi*t);
-% h_lpf_x6 = 2*w_a*sinc(w_f*t) .* cos(w_f*pi*t);
-% 
-% % Individual modulated signals
-% x1_mod = ece301conv(x1,h_lpf);
-% x2_mod = ece301conv(x2,h_lpf) .* cos(2*pi*w_b*t);
-% x3_mod = ece301conv(x3,h_lpf) .* cos(2*pi*w_c*t);
-% x4_mod = ece301conv(x4,h_lpf) .* cos(2*pi*w_d*t);
-% x5_mod = ece301conv(x5,h_lpf) .* cos(2*pi*w_e*t);
-% x6_mod = ece301conv(x6,h_lpf) .* cos(2*pi*w_f*t);
-% 
-% % wavwrite(x1_mod,f_sample,'x1mod.wav');
-% % wavwrite(x2_mod,f_sample,'x2mod.wav');
-% wavwrite(x3_mod,f_sample,'x3mod.wav');
-% % wavwrite(x4_mod,f_sample,'x4mod.wav');
-% % wavwrite(x5_mod,f_sample,'x5mod.wav');
-% % wavwrite(x6_mod,f_sample,'x6mod.wav');
-% 
-% % SSB modulated signals
-% x1_mod_final = ece301conv(x1_mod,h_lpf_x1);
-% x2_mod_final = ece301conv(x2_mod,h_lpf_x2);
-% x3_mod_final = ece301conv(x3_mod,h_lpf_x3);
-% x4_mod_final = ece301conv(x4_mod,h_lpf_x4);
-% x5_mod_final = ece301conv(x5_mod,h_lpf_x5);
-% x6_mod_final = ece301conv(x6_mod,h_lpf_x6);
-% 
-% % Final combination of modulated signals
-% mod_final = x1_mod_final + x2_mod_final + x3_mod_final + x4_mod_final + x5_mod_final + x6_mod_final;
-% 
-% % Plot of frequency domain of final output
-% modfft = abs(fft(mod_final));
-% modfft = modfft(1:20000);
-% plot(f,modfft);
-% title('Final Output in Freq. Domain');
+% Removing lower side filters
+x1_ssb_lpf = 2 * W1 * sinc(2 * W1 * t) .* sin(fc1 * t);
+x2_ssb_lpf = 2 * W2 * sinc(2 * W2 * t) .* sin(fc2 * t);
+x3_ssb_lpf = 2 * W3 * sinc(2 * W3 * t) .* sin(fc3 * t);
+x4_ssb_lpf = 2 * W4 * sinc(2 * W4 * t) .* sin(fc4 * t);
+x5_ssb_lpf = 2 * W5 * sinc(2 * W5 * t) .* sin(fc5 * t);
+x6_ssb_lpf = 2 * W6 * sinc(2 * W6 * t) .* sin(fc6 * t);
 
-%wavwrite(mod_final,f_sample,'radio2.wav');
+% convolution 
+z1 = ece301conv(y1, x1_ssb_lpf); 
+z2 = ece301conv(y2, x2_ssb_lpf); 
+z3 = ece301conv(y3, x3_ssb_lpf); 
+z4 = ece301conv(y4, x4_ssb_lpf); 
+z5 = ece301conv(y5, x5_ssb_lpf); 
+z6 = ece301conv(y6, x6_ssb_lpf); 
+
+% adding signals together
+total = z1 +z2 +z3 +z4 + z5 + z6;
+
+%% Demodulation
+
+r1 = ece301conv(total, x1_ssb_lpf);
+r2 = ece301conv(total, x2_ssb_lpf);
+r3 = ece301conv(total, x3_ssb_lpf);
+r4 = ece301conv(total, x4_ssb_lpf);
+r5 = ece301conv(total, x5_ssb_lpf);
+r6 = ece301conv(total, x6_ssb_lpf);
+
+s1 = r1 .* exp(-1i * fc1 * t);
+s2 = r2 .* exp(-1i * fc2 * t);
+s3 = r3 .* exp(-1i * fc3 * t);
+s4 = r4 .* exp(-1i * fc4 * t);
+s5 = r5 .* exp(-1i * fc5 * t);
+s6 = r6 .* exp(-1i * fc6 * t);
+
+t1 = ece301conv(r1, h);
+t2 = ece301conv(r2, h);
+t3 = ece301conv(r3, h);
+t4 = ece301conv(r4, h);
+t5 = ece301conv(r5, h);
+t6 = ece301conv(r6, h);
+
+u1 = r1 .* 4;
+u2 = r2 .* 8;
+u3 = r3 .* 4;
+u4 = r4 .* 4;
+u5 = r5 .* 4;
+u6 = r6 .* 4;
+
+ 
+
+
+%% plot stuff yo
+% 
+% figure(1);
+% myfft1 = abs(fft(x2_ssb_lpf));
+% myfft1 = myfft1(1:20000);
+% myfft = abs(fft(total));
+% myfft = myfft(1:20000);
+% plot(f, myfft,f, myfft1);
+% axis([1000, 4000, 0, 150]); 
+
+
+figure(2);
+subplot(5,1,1);
+y1fft = abs(fft(x2_lpf));
+y1fft = y1fft(1:20000);
+plot(f, y1fft);
+title('original lpf signal');
+
+subplot(5,1,2);
+y1fft = abs(fft(r2));
+y1fft = y1fft(1:20000);
+plot(f, y1fft);
+title('after pass through of carrier lpf');
+
+
+subplot(5,1,3);
+y2fft = abs(fft(x2_lpf));
+y2fft = y2fft(1:20000);
+y1fft = abs(fft(s2));
+y1fft = y1fft(1:20000);
+plot(f, y1fft, f, y2fft);
+title('second lpf and shift');
+axis([0, 1000, 0, 1000]);
+
+
+subplot(5,1,4);
+plot(t, x2_lpf, t, u2);
+title('original signal overlayed demodulated signal');
+ 
+subplot(5,1,5);
+plot(t, x2_lpf, t, u2);
+axis([-3, -2.95, -0.08 0.08]);
+title('zoomed above');
+
+ 
+%% Write back sound to file 
+
+%soundsc(x2_lpf, f_sample);
+%soundsc(real(u2), f_sample);
+

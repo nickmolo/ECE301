@@ -27,7 +27,7 @@ x1_lpf = ece301conv(x1, h);
 x2_lpf = ece301conv(x2, h);
 x3_lpf = ece301conv(x3, h);
 
-soundsc(x1_lpf, f_sample);
+%soundsc(x1_lpf, f_sample);
 
 %% Picking Filter Frequencies 
 
@@ -63,7 +63,7 @@ w3 = w3.*2;
 %% Graphing 
 f = f_sample*(0:19999)/100000;
 
-
+figure;
 subplot(3,3,1);
 plot(t, x1_lpf, t, w1);
 title('x1 demodulated over x1 lpf');
