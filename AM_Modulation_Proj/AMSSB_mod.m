@@ -48,12 +48,12 @@ x4_mod = ece301conv(x4,h_lpf) .* cos(2*pi*w_d*t);
 x5_mod = ece301conv(x5,h_lpf) .* cos(2*pi*w_e*t);
 x6_mod = ece301conv(x6,h_lpf) .* cos(2*pi*w_f*t);
 
-wavwrite(x1_mod,f_sample,'x1mod.wav');
-wavwrite(x2_mod,f_sample,'x2mod.wav');
-wavwrite(x3_mod,f_sample,'x3mod.wav');
-wavwrite(x4_mod,f_sample,'x4mod.wav');
-wavwrite(x5_mod,f_sample,'x5mod.wav');
-wavwrite(x6_mod,f_sample,'x6mod.wav');
+% wavwrite(x1_mod,f_sample,'x1mod.wav');
+% wavwrite(x2_mod,f_sample,'x2mod.wav');
+% wavwrite(x3_mod,f_sample,'x3mod.wav');
+% wavwrite(x4_mod,f_sample,'x4mod.wav');
+% wavwrite(x5_mod,f_sample,'x5mod.wav');
+% wavwrite(x6_mod,f_sample,'x6mod.wav');
 
 % SSB modulated signals
 x1_mod_final = ece301conv(x1_mod,h_lpf_x1);
@@ -67,10 +67,11 @@ x6_mod_final = ece301conv(x6_mod,h_lpf_x6);
 mod_final = x1_mod_final + x2_mod_final + x3_mod_final + x4_mod_final + x5_mod_final + x6_mod_final;
 
 % Plot of frequency domain of final output
-%modfft = abs(fft(mod_final));
-%modfft = modfft(1:20000);
-%plot(f,modfft);
-%title('Final Output in Freq. Domain');
+modfft = abs(fft(mod_final));
+modfft = modfft(1:20000);
+plot(f,modfft);
+title('Final Output in Freq. Domain');
+axis([0, 8000, 0, 100]);
 
 wavwrite(mod_final,f_sample,'radio2.wav');
 

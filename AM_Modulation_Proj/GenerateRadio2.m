@@ -125,13 +125,13 @@ u6 = r6 .* 4;
 
 %% plot stuff yo
 % 
-% figure(1);
-% myfft1 = abs(fft(x2_ssb_lpf));
-% myfft1 = myfft1(1:20000);
-% myfft = abs(fft(total));
-% myfft = myfft(1:20000);
-% plot(f, myfft,f, myfft1);
-% axis([1000, 4000, 0, 150]); 
+figure(1);
+myfft1 = abs(fft(x2_ssb_lpf));
+myfft1 = myfft1(1:20000);
+myfft = abs(fft(total));
+myfft = myfft(1:20000);
+plot(f, myfft,f, myfft1);
+axis([0, 10000, 0, 150]); 
 
 
 figure(2);
