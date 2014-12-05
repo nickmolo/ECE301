@@ -17,7 +17,7 @@ w_f = 7.25 * w_a; % Wanted 6.25-7.25kHz
 duration = 8;
 f_sample = 44100;
 t = (((0-4)*f_sample+0.5):((duration-4)*f_sample-0.5))/f_sample;
-[radio2,f_sample,N]=wavread('radio2');
+[radio2,~]=audioread('radio2.wav');
 x = radio2';
 f = f_sample * (1:20000)/100000;
 
