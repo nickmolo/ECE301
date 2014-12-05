@@ -13,28 +13,28 @@ t=(((0-4)*f_sample+0.5):((duration-4)*f_sample-0.5))/f_sample;
 radio1=radio1';
 
 %% Low Pass filter creation
-Wc =1000/pi;
-%h = 2*Wc*sinc(2* Wc * t);
-h = sin(2*pi*500*t)./(pi*t);
+Wc =1000;
+h = sin(2*pi*1000*t)./(pi*t);
 
 %% Frequencies decided upon
-fc1 = 900*pi;
-fc2 = 2500*pi;
-fc3 = 3900*pi;
+fc1 = 2*pi*1000;
+fc2 = 2*pi*3200;
+fc3 = 2*pi*5400;
 
 %% Demodulation
 
 % choosing which channel to restore
 if ch == 1 
-    w = radio1.*cos(fc1 * t);
+    k =fc1;
 elseif ch == 2
-    w = radio1.*cos(fc2 * t);
+    k = fc2;
 elseif ch == 3
-    w = radio1.*cos(fc3 * t);
+    k = fc3;
 end
 
+w = radio1 .* 2 .* cos(k * t);
 w = ece301conv(w, h);
-w = w.*2;
+
 
 % Playback
 soundsc(w, f_sample);

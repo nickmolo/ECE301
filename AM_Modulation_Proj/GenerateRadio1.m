@@ -16,11 +16,11 @@ x2=x2';
 [x3, ~] = audioread('x3.wav');
 x3=x3';
 
-Wc =1000/pi;
+Wc =1000;
 
 %% Low Pass filter creation
 %h = 2*Wc*sinc(2* Wc * t);
-h = sin(2*pi*500*t)./(pi*t);
+h = sin(2*pi*1000*t)./(pi*t);
 
 %% Passing signal through low pass filter
 x1_lpf = ece301conv(x1, h);
@@ -31,9 +31,9 @@ x3_lpf = ece301conv(x3, h);
 
 %% Picking Filter Frequencies 
 
-fc1 = 900*pi;
-fc2 = 2500*pi;
-fc3 = 3900*pi;
+fc1 = 2*pi*1000;
+fc2 = 2*pi*3200;
+fc3 = 2*pi*5400;
 
 %% Construct AM Modulated signal
 y1 = x1_lpf.*cos(fc1 * t);

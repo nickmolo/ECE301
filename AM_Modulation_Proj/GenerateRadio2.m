@@ -5,6 +5,7 @@
 duration = 8;
 f_sample = 44100;
 t = (((0-4)*f_sample+0.5):((duration-4)*f_sample-0.5))/f_sample;
+f = f_sample * (1:20000)/100000;
 
 %% Load the samples
 [x1, ~]=audioread('x1.wav');
@@ -27,8 +28,11 @@ x6=x6';
 
 %% Initinal low pass filter
 
-W = 2*pi*1000;
-h = sin(W * t) ./ (pi * t);
+W = 1000;
+h = sin(2*pi*W * t) ./ (pi * t);
+
+%Wc =1000/pi;
+%h = 2*Wc*sinc(2* Wc * t);
 
 %% Putting signals through low pass filter
 
@@ -100,6 +104,7 @@ audiowrite('radio2.wav', total, f_sample );
 % elseif ch == 6
 %     k = fc6;
 % end
+% 
 % 
 % bpf = sin(k*t)./(pi*t) - sin((k-2*pi*1000)*t)./(pi*t);
 % w_bpf = ece301conv(radio2, bpf);
